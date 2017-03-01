@@ -4,11 +4,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -92,7 +88,28 @@ public class Experiment {
 	}
 
 	public void initLog() {
-		// ...
+		File logFile = new File("experiment_results.csv");
+
+		// Create the file
+		try {
+            PrintWriter pwLog = new PrintWriter(logFile);
+		    String header =
+                    "Time\t"
+                    +"Participant ID\t"
+                    +"Block\t"
+                    +"Trial\t"
+                    +"Visual Variable\t"
+                    +"Objects Count\t"
+                    +"Reaction Time\n";
+            pwLog.print(header);
+            pwLog.flush();
+
+			System.out.println("File is created!");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("File could not be created or exists already");
+		}
+
 	}
 
 	public void nextTrial() {
