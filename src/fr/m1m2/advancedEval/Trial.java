@@ -97,14 +97,7 @@ public class Trial {
                 experiment.nextTrial();
 
             } else {
-            	// Redo the experiment
 
-				// Hide the ghosts
-				// Show the shapes again
-				// Set up the timer
-				canvas.removeShapes(ghosts);
-				canvas.removeMouseListener(clickListener);
-				displayShapes();
             }
 
 
