@@ -82,7 +82,8 @@ public class Trial {
                     e.getY() < targetMark.getMaxY()) {
 
                 // 1. Log the time taken to hit the space-bar after the image has been displayed (difference in ms)
-                long reactionTime = timeImageShown.getTime() - timeSpaceHit.getTime();
+                long reactionTime = timeSpaceHit.getTime() - timeImageShown.getTime();
+                System.out.println("User reaction time is: " + reactionTime);
 
                 // 2. Remove the transparent target from the screen
                 canvas.removeShapes(target);
