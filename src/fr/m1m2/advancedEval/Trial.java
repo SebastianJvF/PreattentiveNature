@@ -5,6 +5,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -29,6 +33,8 @@ public class Trial {
 
     protected Date timeSpaceHit;
     protected Date timeImageShown;
+
+    protected PrintWriter out;
 
 	
 	public Trial(Experiment experiment, boolean practice, int block, int trial, String visualVariable, int objectCount) {
@@ -84,6 +90,7 @@ public class Trial {
                 // 1. Log the time taken to hit the space-bar after the image has been displayed (difference in ms)
                 long reactionTime = timeSpaceHit.getTime() - timeImageShown.getTime();
                 System.out.println("User reaction time is: " + reactionTime);
+                writeToFile(reactionTime);
 
                 // 2. Remove the transparent target from the screen
                 canvas.removeShapes(target);
@@ -165,7 +172,7 @@ public class Trial {
 		CRectangle targetMark = new CRectangle();
 
 		switch(visualVariable) {
-			case "VV1":
+			case "vv1":
 
 			    // Add target
                 targetMark = createShape(targetSize, markColor);
@@ -177,7 +184,7 @@ public class Trial {
 
 				break;
 
-			case "VV2":
+			case "vv2":
 
                 // Add target
                 targetMark = createShape(markSize, targetColor);
@@ -189,7 +196,7 @@ public class Trial {
 
 				break;
 
-			case "VV1VV2":
+			case "vv1vv2":
 
 				// Target
                 targetMark = createShape(targetSize, targetColor);
@@ -240,7 +247,8 @@ public class Trial {
             }
 
             // Draw ghost behind the place where the mark will appear
-            CRectangle ghost = canvas.newRectangle(x, y, (10), (10));
+            CRectangle ghost = canvas.newRectangle(x, y, (20), (20));
+            ghost.translateBy(-10, -10);
             ghost.setFillPaint(Color.lightGray);
             ghost.setOutlined(false);
             ghost.addTag(ghosts);
@@ -298,5 +306,36 @@ public class Trial {
 
 		canvas.requestFocus();
         canvas.addKeyListener(enterListener);
+
 	}
+
+	protected void writeToFile(long reactionTime) {
+		long currentTime = new Date().getTime();
+
+		// Open logfile
+		try(FileWriter fw = new FileWriter("experiment_results.csv", true);
+			BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw);)
+		{
+
+			System.out.println("Writing to file Block: " + block);
+
+			String header =
+							currentTime + "\t"
+							+ experiment.getParticipant() + "\t"
+							+ block + "\t"
+							+ trial + "\t"
+							+ visualVariable + "\t"
+							+ objectCount + "\t"
+							+ reactionTime + "\n";
+
+			out.print(header);
+
+			// Write as soon as the line is finished
+			out.flush();
+
+		} catch (IOException e) {
+			System.out.println("Could not open log file.");
+		}
+	}
+
 }

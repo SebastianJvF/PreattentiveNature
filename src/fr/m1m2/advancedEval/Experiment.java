@@ -33,6 +33,7 @@ public class Experiment {
 	protected int currentTrial = 0;
 	
 	protected Canvas canvas;
+	JFrame frame;
 
 	public Experiment() { }
 
@@ -51,7 +52,7 @@ public class Experiment {
 	}
 	
 	public void initScene() {
-		JFrame frame = new JFrame("Experiment -- preattention");
+		frame = new JFrame("Experiment -- preattention");
 		canvas = new Canvas(840, 700);
 		frame.getContentPane().add(canvas);
 		frame.pack();
@@ -74,7 +75,7 @@ public class Experiment {
 					String vv = parts[4];
 					int objectsCount = Integer.parseInt(parts[5]);
 					// ...
-					Trial tl = new Trial(this, practice, block, trial, vv, objectsCount);
+					Trial tl = new Trial(this, practice, b, t, vv, objectsCount);
 					allTrials.add(tl);	
 				}
 				line = br.readLine();
@@ -113,8 +114,16 @@ public class Experiment {
 	}
 
 	public void nextTrial() {
-		Trial nextTrial = allTrials.get(currentTrial++);
-		nextTrial.displayInstructions();
+
+		// Check if
+		if(currentTrial < allTrials.size()-1) {
+			currentTrial++;
+			Trial nextTrial = allTrials.get(currentTrial);
+			nextTrial.displayInstructions();
+		} else {
+			System.out.println("Experiment finished.");
+			frame.setVisible(false);
+		}
 	}
 
 	/*******************************/
