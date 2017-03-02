@@ -8,4 +8,8 @@
 \f0\fs24 \cf0 out/\
 .idea/\
 bin/}
+<<<<<<< Updated upstream
 .idea/workspace.xml
+=======
+*.class
+>>>>>>> Stashed changes
